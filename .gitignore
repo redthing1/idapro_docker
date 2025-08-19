@@ -1,0 +1,8 @@
+CLAUDE*
+claude/
+.claude
+.vscode
+
+*.zip
+*license*
+*hexlic*
