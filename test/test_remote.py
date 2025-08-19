@@ -30,8 +30,12 @@ with ida.Database.open(path=temp_binary, save_on_close=False) as db:
     print(f"  Architecture: {db.architecture}")
     print(f"  Entry point: {hex(db.entries[0].address)}")
     print(f"  Address range: {hex(db.minimum_ea)}-{hex(db.maximum_ea)}")
-    func_count = len(list(db.functions))
-    print(f"  Functions: {func_count}")
-    string_count = len(list(db.strings))
-    print(f"  Strings: {string_count}")
+
+    # just get first function and decompile it
+    first_func = next(iter(db.functions))
+    pseudocode = db.functions.get_pseudocode(first_func)
+    print(f"\n{db.functions.get_name(first_func)} @ {hex(first_func.start_ea)}:")
+    for line in pseudocode:
+        print(line)
+
 print("✓ Database closed")
