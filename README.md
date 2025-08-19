@@ -33,9 +33,10 @@ ida = c.root.ida
 print(f"ida domain v{ida.__version__}")
 
 # open a sample database
+binary_path = "/bin/ls"
 Database = ida.Database
-with Database.open(path="/bin/ls", save_on_close=False) as db:
-    print(f'✓ Opened: {db_path}')
+with Database.open(path=binary_path, save_on_close=False) as db:
+    print(f'✓ Opened: {binary_path}')
     print(f'  Architecture: {db.architecture}')
     print(f'  Entry point: {hex(db.entries[0].address)}')
     print(f'  Address range: {hex(db.minimum_ea)}-{hex(db.maximum_ea)}')

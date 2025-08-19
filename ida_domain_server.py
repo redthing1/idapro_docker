@@ -15,7 +15,7 @@ from pathlib import Path
 
 import rpyc
 import typer
-from rpyc.utils.server import ThreadedServer
+from rpyc.utils.server import ForkingServer
 
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
 
@@ -186,7 +186,8 @@ def cli(
     print()
 
     # create and configure the server
-    server = ThreadedServer(
+    # forking server: each client gets their own ida process
+    server = ForkingServer(
         IdaDomainService(),
         hostname=host,
         port=port,

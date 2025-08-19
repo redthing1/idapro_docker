@@ -7,7 +7,8 @@ ARG IDA_LICENSE
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         curl ca-certificates python3 python3-pip \
-        libssl3 libffi8 libc6 libstdc++6 && \
+        libssl3 libffi8 libc6 libstdc++6 \
+        tcc libc6-dev && \
     # cleanup
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -42,6 +43,17 @@ COPY ${IDA_LICENSE} /home/user/.idapro/idapro.hexlic
 # copy ida domain server script
 COPY ida_domain_server.py /home/user/ida_domain_server.py
 RUN chmod +x /home/user/ida_domain_server.py && chown user:user /home/user/ida_domain_server.py /home/user/.idapro/idapro.hexlic
+
+# copy and compile ida eula tool
+COPY tools/ida_eula.c /tmp/ida_eula.c
+RUN tcc -o /tmp/ida_eula /tmp/ida_eula.c -ldl
+
+# configure python for ida and accept eula using our tool
+RUN su - user -c 'cd /home/user && /opt/idapro/idapyswitch --set-python /usr/bin/python3 || true'
+RUN su - user -c 'cd /opt/idapro && LD_LIBRARY_PATH=/opt/idapro /tmp/ida_eula -l /opt/idapro/libida.so -s'
+
+# cleanup temp files
+RUN rm -f /tmp/ida_eula.c /tmp/ida_eula
 
 ENTRYPOINT ["/tini", "--"]
 
