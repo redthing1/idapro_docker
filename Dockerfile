@@ -52,6 +52,9 @@ RUN tcc -o /tmp/ida_eula /tmp/ida_eula.c -ldl
 RUN su - user -c 'cd /home/user && /opt/idapro/idapyswitch --set-python /usr/bin/python3 || true'
 RUN su - user -c 'cd /opt/idapro && LD_LIBRARY_PATH=/opt/idapro /tmp/ida_eula -l /opt/idapro/libida.so -s'
 
+# pre-install script dependencies with uv to avoid runtime downloads
+RUN su - user -c 'cd /home/user && /home/user/ida_domain_server.py --help' || true
+
 # cleanup temp files
 RUN rm -f /tmp/ida_eula.c /tmp/ida_eula
 
