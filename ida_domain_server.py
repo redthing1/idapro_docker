@@ -1,6 +1,6 @@
-#!/usr/bin/env -S uv run --script
+#!/usr/bin/env -S uv run --python-preference system --script
 # /// script
-# requires-python = ">=3.13"
+# requires-python = ">=3.11"
 # dependencies = [
 #     "ida-domain",
 #     "rpyc",
@@ -42,8 +42,8 @@ class IdaDomainService(rpyc.Service):
         print(f"client disconnected: {conn}")
 
     @property
-    def exposed_id(self):
-        """expose ida_domain module as 'id'"""
+    def exposed_ida(self):
+        """expose ida_domain module as 'ida'"""
         return ida_domain
 
     @property
@@ -181,7 +181,7 @@ def cli(
         print("example client usage:")
         print("  import rpyc")
         print(f"  c = rpyc.connect('{host}', {port})")
-        print("  id = c.root.id  # access ida_domain as 'id'")
+        print("  ida = c.root.ida  # access ida_domain as 'ida'")
         print("  # or: ida_domain = c.root.ida_domain")
     print()
 

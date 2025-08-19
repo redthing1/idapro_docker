@@ -19,9 +19,9 @@ def test_connection():
         c = rpyc.connect("127.0.0.1", 18812)
         print("connected to server successfully")
 
-        # access ida domain via the 'id' alias
-        id = c.root.id
-        print(f"ida_domain available: {id}")
+        # access ida domain via the 'ida' alias
+        ida = c.root.ida
+        print(f"ida_domain available: {ida}")
 
         # try to get version info
         version = c.root.get_version()
@@ -29,7 +29,7 @@ def test_connection():
 
         # show available modules
         print("\navailable ida_domain modules:")
-        for attr in sorted(dir(id)):
+        for attr in sorted(dir(ida)):
             if not attr.startswith("_"):
                 print(f"  {attr}")
 
