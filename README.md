@@ -1,7 +1,9 @@
 
 # idapro_docker
 
-a docker image for ida pro 9.x+ that exposes a [rpyc](https://rpyc.readthedocs.io/en/latest/) service with the new [ida-domain](https://github.com/hexrayssa/ida-domain) api
+a docker image for ida pro 9.x+ that exposes a [rpyc](https://rpyc.readthedocs.io/en/latest/) service with the new [ida-domain](https://github.com/hexrayssa/ida-domain) api!
+this gives you access to a self-contained, scriptable ida pro instance.
+binaries are not included, only the scripts to set up and build everything; drop in your copy of ida and your license and build an image!
 
 ## usage
 
