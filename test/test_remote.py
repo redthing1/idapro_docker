@@ -3,12 +3,21 @@
 # requires-python = ">=3.11"
 # dependencies = [
 #     "rpyc",
+#     "import-proxy",
 # ]
 # ///
 
 import rpyc
 
 c = rpyc.connect("127.0.0.1", 18812)
+
+# proxy ida_domain import
+import importproxy
+
+importproxy.register("ida", importproxy.object_resolver(c.root.ida))
+
+import ida
+from ida import Database
 
 
 def remote_temp_copy():
@@ -20,12 +29,11 @@ def remote_temp_copy():
     return temp_binary
 
 
-ida = c.root.ida
 print(f"ida domain v{ida.__version__}")
 
 # open a sample database
 temp_binary = remote_temp_copy()
-with ida.Database.open(path=temp_binary, save_on_close=False) as db:
+with Database.open(path=temp_binary, save_on_close=False) as db:
     print(f"✓ Opened: {temp_binary}")
     print(f"  Architecture: {db.architecture}")
     print(f"  Entry point: {hex(db.entries[0].address)}")
